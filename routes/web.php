@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get("/", [PagesController::class, 'fnIndex']) -> name('xInicio');   
+Route::get("/galería/{numero?}", [PagesController::class, 'fnGaleria']) -> where('numero','[0-9]+') -> name('xGaleria');
+Route::get("/lista", [PagesController::class, 'fnLista']) -> name('xLista');
+
+Route:: middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified
+']) ->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    }) -> name('dashboard');
+});
 
 Route::get('/', function () {
     return view('welcome');
